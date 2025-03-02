@@ -1,2 +1,8 @@
-// Sassy
+$purple: #7d3cff;
+$primary: $purple;
+
+@use "sass/utilities" with (
+    $primary: $purple,
+);
+
 @use "bulma";
