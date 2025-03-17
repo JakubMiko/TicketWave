@@ -22,11 +22,13 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="h-full">
+  <body class="is-flex is-flex-direction-column" style="min-height: 110vh;">
     <%= render Shared::HeaderComponent.new %>
 
-    <main id="main-content" class="flex justify-center items-center lg:min-h-screen mx-auto px-5">
-      <%= yield %>
+    <main id="main-content" class="is-flex-grow-1">
+      <div class="container">
+        <%= yield %>
+      </div>
     </main>
 
     <%= render Shared::FooterComponent.new %>
