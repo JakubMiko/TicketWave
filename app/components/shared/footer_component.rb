@@ -1,4 +1,4 @@
-# frozen_string_literal: true
-
-class Shared::FooterComponent < ViewComponent::Base
+module Shared
+  class FooterComponent < BaseComponent
+  end
 end
