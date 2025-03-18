@@ -1,5 +1,5 @@
 class LandingController < ApplicationController
   def show
-    render Landing::ShowComponent.new
+    render "landing/show"
   end
 end
