@@ -4,6 +4,12 @@
       <div class="column is-6">
         <h2 class="title is-3 has-text-centered">Zaloguj się</h2>
 
+        <% if flash[:alert] %>
+          <div class="notification is-danger">
+            <%= flash[:alert] %>
+          </div>
+        <% end %>
+
         <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "box" }) do |f| %>
           <%= render "devise/shared/error_messages", resource: resource %>
 

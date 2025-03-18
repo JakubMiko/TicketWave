@@ -4,10 +4,15 @@
       <div class="column is-6">
         <h2 class="title is-3 has-text-centered">Zarejestruj się</h2>
 
+        <% if flash[:alert] %>
+          <div class="notification is-danger">
+            <%= flash[:alert] %>
+          </div>
+        <% end %>
+
         <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "box" }) do |f| %>
           <%= render "devise/shared/error_messages", resource: resource %>
 
-          <!-- Pole Imię -->
           <div class="field">
             <label class="label"><%= f.label :first_name, "Imię" %></label>
             <div class="control has-icons-left">
@@ -18,7 +23,6 @@
             </div>
           </div>
 
-          <!-- Pole Nazwisko -->
           <div class="field">
             <label class="label"><%= f.label :last_name, "Nazwisko" %></label>
             <div class="control has-icons-left">
@@ -29,7 +33,6 @@
             </div>
           </div>
 
-          <!-- Pole Email -->
           <div class="field">
             <label class="label"><%= f.label :email, "Email" %></label>
             <div class="control has-icons-left">
@@ -40,7 +43,6 @@
             </div>
           </div>
 
-          <!-- Pole Hasło -->
           <div class="field">
             <label class="label"><%= f.label :password, "Hasło" %></label>
             <% if @minimum_password_length %>
@@ -54,7 +56,6 @@
             </div>
           </div>
 
-          <!-- Pole Potwierdzenie Hasła -->
           <div class="field">
             <label class="label"><%= f.label :password_confirmation, "Potwierdź hasło" %></label>
             <div class="control has-icons-left">
@@ -65,7 +66,6 @@
             </div>
           </div>
 
-          <!-- Przycisk Zarejestruj się -->
           <div class="field">
             <div class="control">
               <%= f.submit "Zarejestruj się", class: "button is-primary is-fullwidth" %>
