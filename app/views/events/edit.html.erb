@@ -1,0 +1,49 @@
+<div class="container mt-5">
+  <div class="box">
+    <h1 class="title is-3 has-text-primary">Edytuj wydarzenie</h1>
+    <p class="subtitle is-5 has-text-grey">Zmień dane wydarzenia i zapisz</p>
+
+    <%= form_with model: event, url: event_path(event), method: :patch, local: true do |form| %>
+      <div class="field">
+        <%= form.label :name, "Nazwa wydarzenia", class: "label" %>
+        <div class="control">
+          <%= form.text_field :name, class: "input", placeholder: "Wprowadź nazwę wydarzenia" %>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= form.label :description, "Opis", class: "label" %>
+        <div class="control">
+          <%= form.text_area :description, class: "textarea", placeholder: "Wprowadź opis wydarzenia" %>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= form.label :place, "Miejsce", class: "label" %>
+        <div class="control">
+          <%= form.text_field :place, class: "input", placeholder: "Wprowadź miejsce wydarzenia" %>
+        </div>
+      </div>
+
+        <div class="field">
+        <%= form.label :date, "Data", class: "label" %>
+        <div class="control">
+            <%= form.datetime_select :date, include_blank: true %>
+        </div>
+        </div>
+
+
+      <div class="field">
+        <%= form.label :category, "Kategoria", class: "label" %>
+        <div class="control">
+          <%= form.text_field :category, class: "input", placeholder: "Wprowadź kategorię wydarzenia" %>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <%= form.submit "Zapisz zmiany", class: "button is-primary" %>
+        <%= link_to "Anuluj", events_path, class: "button is-light" %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     registrations: "users/registrations",
     sessions: "users/sessions"
   }
-
+  resources :events
   root to: "landing#show"
   get "up" => "rails/health#show", as: :rails_health_check
 end
