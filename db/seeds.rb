@@ -11,9 +11,27 @@ admin = User.create!(first_name: "Admin", last_name: "User", email: "admin@gmail
 regular_user = User.create!(first_name: "Regular", last_name: "User", email: "regular@gmail.com", password: "password", role: "user")
 
 events = []
-events << Event.create!(name: "Koncert XYZ", description: "Niesamowity koncert zespołu XYZ", place: "Arena Warszawa", date: Time.now + 2.months, category: "music")
-events << Event.create!(name: "Premiera Sztuki ABC", description: "Poruszająca premiera w teatrze", place: "Teatr Narodowy", date: Time.now + 1.month, category: "theater")
-events << Event.create!(name: "Mecz Piłki Nożnej Polska vs. Niemcy", description: "Emocjonujący mecz na stadionie", place: "Stadion Narodowy", date: Time.now + 3.months, category: "sports")
+events << Event.create!(
+  name: "Koncert XYZ",
+  description: "Niesamowity koncert zespołu XYZ",
+  place: "Arena Warszawa",
+  date: (Time.now + 2.months).change(hour: 19, min: 0, sec: 0),
+  category: "music"
+)
+events << Event.create!(
+  name: "Premiera Sztuki ABC",
+  description: "Poruszająca premiera w teatrze",
+  place: "Teatr Narodowy",
+  date: (Time.now + 1.month).change(hour: 18, min: 30, sec: 0),
+  category: "theater"
+)
+events << Event.create!(
+  name: "Mecz Piłki Nożnej Polska vs. Niemcy",
+  description: "Emocjonujący mecz na stadionie",
+  place: "Stadion Narodowy",
+  date: (Time.now + 3.months).change(hour: 20, min: 0, sec: 0),
+  category: "sports"
+)
 
 ticket_batches = []
 events.each do |event|

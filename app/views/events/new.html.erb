@@ -25,17 +25,23 @@
         </div>
       </div>
 
-        <div class="field">
-            <%= form.label :date, "Data", class: "label" %>
-            <div class="control">
-                <%= form.datetime_select :date, include_blank: true %>
-            </div>
-        </div>
-
       <div class="field">
+       <%= form.label :date, "Data", class: "label", for: "event_date_3i" %>
+        <div class="control">
+          <% form.datetime_select(:date, order: [:day, :month, :year, :hour, :minute], date_separator: '', datetime_separator: '', time_separator: '').split("\n").each do |select| %>
+            <div class="select is-primary is-rounded mr-2">
+              <%= select.html_safe %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="field"> 
         <%= form.label :category, "Kategoria", class: "label" %>
         <div class="control">
-          <%= form.text_field :category, class: "input", placeholder: "Wprowadź kategorię wydarzenia" %>
+          <div class="select is-primary is-rounded">
+            <%= form.select :category, Event.categories.keys.map { |key| [key.humanize, key] }, {}, {} %>
+          </div>
         </div>
       </div>
 
