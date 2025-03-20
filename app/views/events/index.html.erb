@@ -34,7 +34,7 @@
             <footer class="card-footer">
               <%= link_to "Szczegóły", event_path(event), class: "card-footer-item has-text-info" %>
               <%= link_to "Edytuj", edit_event_path(event), class: "card-footer-item has-text-warning" %>
-              <%= link_to "Usuń", event_path(event), method: :delete, data: { confirm: "Czy na pewno chcesz usunąć to wydarzenie?" }, class: "card-footer-item has-text-danger" %>
+              <%= button_to "Usuń", event_path(event), method: :delete, data: { turbo_confirm: "Czy na pewno chcesz usunąć to wydarzenie?" }, class: "button is-danger" %>
             </footer>
           </div>
         </div>

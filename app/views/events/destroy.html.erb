@@ -4,7 +4,7 @@
     <p class="subtitle is-5">Czy na pewno chcesz usunąć wydarzenie "<%= event.name %>"?</p>
 
     <div class="buttons is-centered">
-      <%= link_to "Usuń", event_path(event), method: :delete, class: "button is-danger" %>
+      <%= button_to "Usuń", event_path(event), method: :delete, data: { turbo_confirm: "Czy na pewno chcesz usunąć to wydarzenie?" }, class: "button is-danger" %>
       <%= link_to "Anuluj", events_path, class: "button is-light" %>
     </div>
   </div>
