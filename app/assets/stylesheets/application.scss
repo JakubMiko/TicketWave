@@ -6,3 +6,32 @@ $primary: $purple;
 );
 
 @use "bulma";
+
+:root {
+    --primary-color: #f8f0ff; /* Bardzo jasny fiolet */
+    --secondary-color: #6a1b9a; /* Ciemniejszy fiolet */
+  }
+  
+  [data-theme="dark"] {
+    --primary-color: #000000; /* Kolor podstawowy w trybie ciemnym */
+    --secondary-color: #4b0082; /* Ciemniejszy fiolet */
+  }
+  
+  body {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+  }
+  
+  /* Styl dla .navbar i .footer w trybie light */
+  .navbar, .footer {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+  }
+  
+  /* Styl dla .navbar i .footer w trybie dark */
+  [data-theme="dark"] .navbar,
+  [data-theme="dark"] .footer {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+  }
+  

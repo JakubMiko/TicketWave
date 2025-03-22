@@ -22,6 +22,11 @@
 
     <div class="navbar-end">
       <div class="navbar-item">
+
+        <button data-controller="theme" data-action="click->theme#toggle" class="button is-light">
+          <img src="<%= asset_path('sun_icon.svg') %>" alt="Przełącz tryb" width="24" height="24">
+        </button>
+
         <% if user_signed_in? %>
             <span class="has-text-weight-bold mr-4">Witaj, <%= current_user.first_name %>!</span>
             <%= button_to "Wyloguj się", destroy_user_session_path, method: :delete, class: "button is-light" %>
