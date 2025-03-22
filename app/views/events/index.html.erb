@@ -31,11 +31,11 @@
               </div>
             </div>
 
-            <footer class="card-footer">
-              <%= link_to "Szczegóły", event_path(event), class: "card-footer-item has-text-info" %>
-              <%= link_to "Edytuj", edit_event_path(event), class: "card-footer-item has-text-warning" %>
-              <%= button_to "Usuń", event_path(event), method: :delete, data: { turbo_confirm: "Czy na pewno chcesz usunąć to wydarzenie?" }, class: "button is-danger" %>
-            </footer>
+          <footer class="card-footer is-flex is-align-items-center">
+            <%= link_to "Szczegóły", event_path(event), class: "card-footer-item has-text-info" %>
+            <%= link_to "Edytuj", edit_event_path(event), class: "card-footer-item has-text-warning" %>
+            <%= button_to "Usuń", event_path(event), method: :delete, data: { turbo_confirm: "Czy na pewno chcesz usunąć to wydarzenie?" }, class: "button is-danger" %>
+          </footer>
           </div>
         </div>
       <% end %>

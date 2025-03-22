@@ -1,6 +1,6 @@
 class Event < ApplicationRecord
-  has_many :ticket_batches
-  has_many :tickets
+  has_many :ticket_batches, dependent: :destroy
+  has_many :tickets, dependent: :destroy
 
   enum :category, {
     music: "music",
