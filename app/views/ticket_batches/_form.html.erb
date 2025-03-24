@@ -1,0 +1,22 @@
+<!-- app/views/ticket_batches/_form.html.erb -->
+<%= form_with model: [event, ticket_batch], local: true do |form| %>
+  <div class="field">
+    <%= form.label :available_tickets, "Liczba dostępnych biletów", class: "label" %>
+    <%= form.number_field :available_tickets, class: "input", min: 1 %>
+  </div>
+  <div class="field">
+    <%= form.label :price, "Cena biletu", class: "label" %>
+    <%= form.number_field :price, class: "input", step: 0.01, min: 0 %>
+  </div>
+  <div class="field">
+    <%= form.label :sale_start, "Data rozpoczęcia sprzedaży", class: "label" %>
+    <%= form.datetime_field :sale_start, class: "input" %>
+  </div>
+  <div class="field">
+    <%= form.label :sale_end, "Data zakończenia sprzedaży", class: "label" %>
+    <%= form.datetime_field :sale_end, class: "input" %>
+  </div>
+  <div class="field">
+    <%= form.submit "Zapisz", class: "button is-primary" %>
+  </div>
+<% end %>
