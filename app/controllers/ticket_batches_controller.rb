@@ -19,12 +19,14 @@ class TicketBatchesController < ApplicationController
   def edit
     event = Event.find(params[:event_id])
     ticket_batch = event.ticket_batches.find(params[:id])
+
     render :edit, locals: { event: event, ticket_batch: ticket_batch }
   end
 
   def update
     event = Event.find(params[:event_id])
     ticket_batch = event.ticket_batches.find(params[:id])
+
     if ticket_batch.update(ticket_batch_params)
       redirect_to event_path(event), notice: "Pula biletów została zaktualizowana."
     else
