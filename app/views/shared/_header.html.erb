@@ -27,9 +27,16 @@
           <img src="<%= asset_path('sun_icon.svg') %>" alt="Przełącz tryb" width="24" height="24">
         </button>
 
-        <% if user_signed_in? %>
-            <span class="has-text-weight-bold mr-4">Witaj, <%= current_user.first_name %>!</span>
-            <%= button_to "Wyloguj się", destroy_user_session_path, method: :delete, class: "button is-light" %>
+        <% if admin_signed_in? %>
+          <p>
+            Serwus, <%= current_admin.first_name %>! <span class="has-text-weight-bold">(A)</span>
+          </p>
+          <%= button_to "Wyloguj się", destroy_admin_session_path, method: :delete, class: "button is-light" %>
+        <% elsif user_signed_in? %>
+          <p>
+            Serwus, <%= current_user.first_name %>!
+          </p>
+          <%= button_to "Wyloguj się", destroy_user_session_path, method: :delete, class: "button is-light" %>
         <% else %>
           <div class="buttons">
             <a class="button is-primary" href="<%= new_user_registration_path %>">
@@ -37,6 +44,9 @@
             </a>
             <a class="button is-light" href="<%= new_user_session_path %>">
               Zaloguj się
+            </a>
+            <a href="<%= new_admin_session_path %>">
+              <img src="<%= asset_path('lifebuoy_icon.svg') %>" alt="Zaloguj się jako administrator" width="24" height="24">
             </a>
           </div>
         <% end %>

@@ -10,7 +10,7 @@ class User < ApplicationRecord
   enum :role, {
     admin: "admin",
     user: "user"
-  }
+  }, default: :user
 
 
   def self.human_attribute_name(attribute, options = {})
