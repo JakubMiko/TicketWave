@@ -9,6 +9,10 @@ Rails.application.routes.draw do
     sessions: "admins/sessions"
   }, path: "admins", class_name: "User"
 
+  namespace :users do
+    get "dashboard", to: "dashboard#show", as: :dashboard
+  end
+
   namespace :admins do
     get "dashboard", to: "dashboard#show", as: :dashboard
   end

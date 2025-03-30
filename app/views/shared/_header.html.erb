@@ -18,6 +18,16 @@
       <a class="navbar-item" href="/events">
         Wydarzenia
       </a>
+
+      <% if admin_signed_in? %>
+        <a class="navbar-item" href="<%= admins_dashboard_path %>">
+          Panel Administratora
+        </a>
+      <% elsif user_signed_in? %>
+        <a class="navbar-item" href="<%= users_dashboard_path %>">
+          Panel Użytkownika
+        </a>
+      <% end %>
     </div>
 
     <div class="navbar-end">
