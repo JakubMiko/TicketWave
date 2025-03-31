@@ -14,7 +14,12 @@
       <%= link_to "Edytuj", edit_event_path(event), class: "button is-warning" %>
       <%= link_to "Usuń", event_path(event), method: :delete, data: { confirm: "Czy na pewno chcesz usunąć to wydarzenie?" }, class: "button is-danger" %>
       <%= link_to "Powrót do listy", events_path, class: "button is-light" %>
-      <button class="button is-primary" data-action="click->modal#open">Dodaj pulę biletów</button>
+      <%= link_to "Dodaj pulę biletów", new_event_ticket_batch_path(event), 
+          class: "button is-primary", 
+          data: { turbo_frame: "modal_frame" } %>
     </div>
   </div>
+  
+  <%= render "ticket_batches_list", event: event %>
+  <turbo-frame id="modal_frame"></turbo-frame>
 </div>

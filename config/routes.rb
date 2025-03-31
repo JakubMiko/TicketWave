@@ -17,6 +17,10 @@ Rails.application.routes.draw do
     get "dashboard", to: "dashboard#show", as: :dashboard
   end
 
+  resources :events do
+    resources :ticket_batches
+  end
+
   resources :events
   root to: "landing#show"
   get "up" => "rails/health#show", as: :rails_health_check

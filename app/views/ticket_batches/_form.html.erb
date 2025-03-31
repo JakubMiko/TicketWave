@@ -1,4 +1,3 @@
-<!-- app/views/ticket_batches/_form.html.erb -->
 <%= form_with model: [event, ticket_batch], local: true do |form| %>
   <div class="field">
     <%= form.label :available_tickets, "Liczba dostępnych biletów", class: "label" %>
@@ -16,7 +15,8 @@
     <%= form.label :sale_end, "Data zakończenia sprzedaży", class: "label" %>
     <%= form.datetime_field :sale_end, class: "input" %>
   </div>
-  <div class="field">
+  <div class="field is-grouped">
     <%= form.submit "Zapisz", class: "button is-primary" %>
+    <button type="button" class="button is-light" data-action="click->modal#close">Anuluj</button>
   </div>
 <% end %>

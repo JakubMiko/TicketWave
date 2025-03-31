@@ -3,14 +3,26 @@ class TicketBatchesController < ApplicationController
     event = Event.find(params[:event_id])
     ticket_batch = TicketBatch.new(event: event)
 
-    render :new, locals: { event: event, ticket_batch: ticket_batch }, status: :ok
+    respond_to do |format|
+      format.html { render :new, locals: { event: event, ticket_batch: ticket_batch } }
+      format.turbo_stream { render :new, locals: { event: event, ticket_batch: ticket_batch } }
+    end
   end
 
   def create
     event = Event.find(params[:event_id])
     ticket_batch = event.ticket_batches.new(ticket_batch_params)
+    
     if ticket_batch.save
-      redirect_to event_path(event), notice: "Pula biletów została dodana."
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace("ticket_batches_list", partial: "events/ticket_batches_list", locals: { event: event.reload }),
+            turbo_stream.update("modal_frame", "")
+          ]
+        end
+        format.html { redirect_to event_path(event), notice: "Pula biletów została dodana." }
+      end
     else
       render :new, locals: { event: event, ticket_batch: ticket_batch }, status: :unprocessable_entity
     end
@@ -20,7 +32,10 @@ class TicketBatchesController < ApplicationController
     event = Event.find(params[:event_id])
     ticket_batch = event.ticket_batches.find(params[:id])
 
-    render :edit, locals: { event: event, ticket_batch: ticket_batch }
+    respond_to do |format|
+      format.html { render :edit, locals: { event: event, ticket_batch: ticket_batch } }
+      format.turbo_stream { render :edit, locals: { event: event, ticket_batch: ticket_batch } }
+    end
   end
 
   def update
@@ -28,7 +43,15 @@ class TicketBatchesController < ApplicationController
     ticket_batch = event.ticket_batches.find(params[:id])
 
     if ticket_batch.update(ticket_batch_params)
-      redirect_to event_path(event), notice: "Pula biletów została zaktualizowana."
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace("ticket_batches_list", partial: "events/ticket_batches_list", locals: { event: event.reload }),
+            turbo_stream.update("modal_frame", "")
+          ]
+        end
+        format.html { redirect_to event_path(event), notice: "Pula biletów została zaktualizowana." }
+      end
     else
       render :edit, locals: { event: event, ticket_batch: ticket_batch }, status: :unprocessable_entity
     end
@@ -38,6 +61,7 @@ class TicketBatchesController < ApplicationController
     event = Event.find(params[:event_id])
     ticket_batch = event.ticket_batches.find(params[:id])
     ticket_batch.destroy
+
     redirect_to event_path(event), notice: "Pula biletów została usunięta."
   end
 

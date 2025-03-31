@@ -6,7 +6,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    event = Event.find(params[:id])
+    event = Event.includes(:ticket_batches).find(params[:id])
 
     if event
       render :show, locals: { event: event }, status: :ok
