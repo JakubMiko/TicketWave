@@ -19,6 +19,8 @@ gem "stimulus-rails"
 gem "view_component"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
+# Validation library for Ruby [https://dry-rb.org/gems/dry-validation]
+gem "dry-validation"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
