@@ -18,6 +18,7 @@
             <th>Miejsce</th>
             <th>Data</th>
             <th>Kategoria</th>
+            <th>Status</th>
             <th class="has-text-centered">Akcje</th>
           </tr>
         </thead>
@@ -34,19 +35,30 @@
               </td>
               <td><%= truncate(event.description, length: 100) %></td>
               <td><%= event.place %></td>
-              <td><%= event.date.strftime("%Y-%m-%d %H:%M") %></td>
+              <td><%= event.date.strftime("%d-%m-%Y %H:%M") %></td>
               <td><%= event.category %></td>
+              <td>
+                <% if event.past_event? %>
+                  <span class="tag is-warning">Wydarzenie minione</span>
+                <% else %>
+                  <span class="tag is-success">Aktywne</span>
+                <% end %>
+              </td>
               <td>
                 <div class="field is-grouped is-grouped-centered">
                   <p class="control">
                     <%= link_to "Szczegóły", event_path(event), class: "button is-small is-info" %>
                   </p>
+
+                  <% if event.editable? %>
+                    <p class="control">
+                      <%= link_to "Edytuj", edit_event_path(event), class: "button is-small is-warning" %>
+                    </p>
+                  <% end %>
+
                   <p class="control">
-                    <%= link_to "Edytuj", edit_event_path(event), class: "button is-small is-warning" %>
-                  </p>
-                  <p class="control">
-                    <%= button_to "Usuń", event_path(event), method: :delete, 
-                        data: { turbo_confirm: "Czy na pewno chcesz usunąć to wydarzenie?" }, 
+                    <%= button_to "Usuń", event_path(event), method: :delete,
+                        data: { turbo_confirm: "Czy na pewno chcesz usunąć to wydarzenie?" },
                         class: "button is-small is-danger" %>
                   </p>
                 </div>

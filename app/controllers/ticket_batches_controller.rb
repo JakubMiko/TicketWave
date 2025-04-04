@@ -12,7 +12,7 @@ class TicketBatchesController < ApplicationController
   def create
     event = Event.find(params[:event_id])
     ticket_batch = event.ticket_batches.new(ticket_batch_params)
-    
+
     if ticket_batch.save
       respond_to do |format|
         format.turbo_stream do

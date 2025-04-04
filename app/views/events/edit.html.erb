@@ -26,13 +26,9 @@
       </div>
 
       <div class="field">
-        <%= form.label :date, "Data", class: "label", for: "event_date_3i" %>
+        <%= form.label :date, "Data i godzina", class: "label" %>
         <div class="control">
-          <% form.datetime_select(:date, order: [:day, :month, :year, :hour, :minute], date_separator: '', datetime_separator: '', time_separator: '').split("\n").each do |select| %>
-            <div class="select is-primary is-rounded mr-2">
-              <%= select.html_safe %>
-            </div>
-          <% end %>
+          <%= form.datetime_local_field :date, class: "input", min: DateTime.now.strftime('%Y-%m-%dT%H:%M'), value: event.date&.strftime('%Y-%m-%dT%H:%M') %>
         </div>
       </div>
 

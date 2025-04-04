@@ -6,20 +6,24 @@
     <div class="content">
       <p><strong>Opis:</strong> <%= event.description %></p>
       <p><strong>Miejsce:</strong> <%= event.place %></p>
-      <p><strong>Data:</strong> <%= event.date.strftime("%Y-%m-%d %H:%M") %></p>
+      <p><strong>Data:</strong> <%= event.date.strftime("%d-%m-%Y %H:%M") %></p>
       <p><strong>Kategoria:</strong> <%= event.category %></p>
     </div>
 
     <div class="buttons">
-      <%= link_to "Edytuj", edit_event_path(event), class: "button is-warning" %>
+      <% unless event.past_event? %>
+        <%= link_to "Edytuj", edit_event_path(event), class: "button is-warning" %>
+      <% end %>
       <%= link_to "Usuń", event_path(event), method: :delete, data: { confirm: "Czy na pewno chcesz usunąć to wydarzenie?" }, class: "button is-danger" %>
       <%= link_to "Powrót do listy", events_path, class: "button is-light" %>
-      <%= link_to "Dodaj pulę biletów", new_event_ticket_batch_path(event), 
-          class: "button is-primary", 
+      <% unless event.past_event? %>
+          <%= link_to "Dodaj pulę biletów", new_event_ticket_batch_path(event),
+          class: "button is-primary",
           data: { turbo_frame: "modal_frame" } %>
+      <% end %>
     </div>
   </div>
-  
+
   <%= render "ticket_batches_list", event: event %>
   <turbo-frame id="modal_frame"></turbo-frame>
 </div>

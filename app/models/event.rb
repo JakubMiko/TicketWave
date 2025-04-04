@@ -12,4 +12,12 @@ class Event < ApplicationRecord
     exhibition: "exhibition",
     other: "other"
   }
+
+  def past_event?
+    date < DateTime.now
+  end
+
+  def editable?
+    !past_event?
+  end
 end

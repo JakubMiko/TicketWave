@@ -1,7 +1,7 @@
 class Admins::RegistrationsController < Devise::RegistrationsController
-  before_action :authenticate_admin_credentials, only: [:new, :create]
-  before_action :configure_sign_up_params, only: [:create]
-  skip_before_action :require_no_authentication, only: [:new, :create]
+  before_action :authenticate_admin_credentials, only: [ :new, :create ]
+  before_action :configure_sign_up_params, only: [ :create ]
+  skip_before_action :require_no_authentication, only: [ :new, :create ]
 
   ADMIN_CREDENTIALS = { username: "admin", password: "supersecret" }
 
@@ -25,7 +25,7 @@ class Admins::RegistrationsController < Devise::RegistrationsController
   end
 
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :role])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :first_name, :last_name, :role ])
   end
 
   def after_sign_up_path_for(resource)

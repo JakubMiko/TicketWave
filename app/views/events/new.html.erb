@@ -4,6 +4,17 @@
     <p class="subtitle is-5 has-text-grey">Wypełnij poniższe pola, aby dodać nowe wydarzenie</p>
 
     <%= form_with model: event, url: events_path, local: true do |form| %>
+      <% if event.errors.any? %>
+        <div class="notification is-danger">
+          <h2 class="has-text-weight-bold"><%= pluralize(event.errors.count, "błąd") %> uniemożliwił zapisanie wydarzenia:</h2>
+          <ul>
+            <% event.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
       <div class="field">
         <%= form.label :name, "Nazwa wydarzenia", class: "label" %>
         <div class="control">
@@ -26,21 +37,19 @@
       </div>
 
       <div class="field">
-       <%= form.label :date, "Data", class: "label", for: "event_date_3i" %>
+        <%= form.label :date, "Data i godzina", class: "label" %>
         <div class="control">
-          <% form.datetime_select(:date, order: [:day, :month, :year, :hour, :minute], date_separator: '', datetime_separator: '', time_separator: '').split("\n").each do |select| %>
-            <div class="select is-primary is-rounded mr-2">
-              <%= select.html_safe %>
-            </div>
-          <% end %>
+          <%= form.datetime_local_field :date, class: "input" %>
         </div>
       </div>
 
-      <div class="field"> 
+      <div class="field">
         <%= form.label :category, "Kategoria", class: "label" %>
         <div class="control">
           <div class="select is-primary is-rounded">
-            <%= form.select :category, Event.categories.keys.map { |key| [key.humanize, key] }, {}, {} %>
+            <%= form.select :category,
+                            options_for_select([["- Wybierz kategorię -", nil]] + Event.categories.keys.map { |key| [key.humanize, key] }, selected: form.object.category),
+                            {}, {} %>
           </div>
         </div>
       </div>
