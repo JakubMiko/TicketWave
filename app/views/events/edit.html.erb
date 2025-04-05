@@ -45,12 +45,32 @@
         <%= form.label :image, "Obraz wydarzenia", class: "label" %>
         <div class="control">
           <% if event.image.attached? %>
-            <figure class="image mb-3 is-128x128">
-              <%= image_tag event.image.variant(resize_to_limit: [128, 128]) %>
-            </figure>
-            <p class="help mb-2">Aktualne zdjęcie. Wybierz nowe, aby zmienić:</p>
+            <div id="current-image-container" class="image-container mb-3" style="max-width: 300px;">
+              <%= image_tag url_for(event.image), alt: event.name, class: "is-slightly-rounded", style: "width: 100%; height: auto;" %>
+            </div>
+          <% else %>
+            <div id="current-image-container" class="image-container mb-3" style="max-width: 300px; display: none;">
+              <img id="preview-image" class="is-slightly-rounded" style="width: 100%; height: auto;" alt="Podgląd obrazu">
+            </div>
           <% end %>
-          <%= form.file_field :image, class: "file", direct_upload: true, accept: "image/*" %>
+          <p id="image-help" class="help mb-2"><%= event.image.attached? ? "Aktualne zdjęcie. Wybierz nowe, aby zmienić:" : "" %></p>
+
+          <div class="file has-name" style="max-width: 400px;">
+            <label class="file-label">
+              <%= form.file_field :image, class: "file-input", direct_upload: true, accept: "image/*" %>
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                  Wybierz plik
+                </span>
+              </span>
+              <span class="file-name" id="filename">
+                Nie wybrano pliku
+              </span>
+            </label>
+          </div>
         </div>
         <p class="help">Wybierz obraz dla wydarzenia. Wspierane formaty: JPG, PNG, GIF.</p>
       </div>
@@ -62,3 +82,44 @@
     <% end %>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const fileInput = document.querySelector('.file-input');
+  const fileName = document.querySelector('.file-name');
+  const imageContainer = document.getElementById('current-image-container');
+  const imageHelp = document.getElementById('image-help');
+
+  let previewImage = imageContainer.querySelector('img');
+  if (!previewImage) {
+    previewImage = document.createElement('img');
+    previewImage.id = 'preview-image';
+    previewImage.className = 'is-slightly-rounded';
+    previewImage.style = 'width: 100%; height: auto;';
+    previewImage.alt = 'Podgląd obrazu';
+    imageContainer.appendChild(previewImage);
+  }
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length > 0) {
+      fileName.textContent = fileInput.files[0].name;
+
+      const file = fileInput.files[0];
+      const imageURL = URL.createObjectURL(file);
+
+      previewImage.src = imageURL;
+
+      imageContainer.style.display = 'block';
+      imageHelp.textContent = 'Podgląd nowego zdjęcia (nie zapisane):';
+    } else {
+      fileName.textContent = 'Nie wybrano pliku';
+      if (!<%= event.image.attached? %>) {
+        imageContainer.style.display = 'none';
+        imageHelp.textContent = '';
+      } else {
+        imageHelp.textContent = 'Aktualne zdjęcie. Wybierz nowe, aby zmienić:';
+      }
+    }
+  });
+});
+</script>
