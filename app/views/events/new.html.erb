@@ -3,7 +3,7 @@
     <h1 class="title is-3 has-text-primary">Dodaj nowe wydarzenie</h1>
     <p class="subtitle is-5 has-text-grey">Wypełnij poniższe pola, aby dodać nowe wydarzenie</p>
 
-    <%= form_with model: event, url: events_path, local: true do |form| %>
+    <%= form_with model: event, url: events_path, local: true, multipart: true do |form| %>
       <% if event.errors.any? %>
         <div class="notification is-danger">
           <h2 class="has-text-weight-bold"><%= pluralize(event.errors.count, "błąd") %> uniemożliwił zapisanie wydarzenia:</h2>
@@ -52,6 +52,14 @@
                             {}, {} %>
           </div>
         </div>
+      </div>
+
+      <div class="field">
+        <%= form.label :image, "Obraz wydarzenia", class: "label" %>
+        <div class="control">
+          <%= form.file_field :image, class: "file", direct_upload: true, accept: "image/*" %>
+        </div>
+        <p class="help">Wybierz obraz dla wydarzenia. Wspierane formaty: JPG, PNG, GIF.</p>
       </div>
 
       <div class="buttons">

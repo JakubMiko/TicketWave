@@ -5,6 +5,7 @@ class EventContract < ApplicationContract
       required(:place).filled(:string)
       required(:category).filled(:string)
       required(:date).filled(:date_time)
+      optional(:image)
     end
 
     rule(:date) do
