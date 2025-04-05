@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <div class="notification is-success">
+    <h1 class="title is-3">Zakup potwierdzony!</h1>
+    <p>Dziękujemy za zakup biletów. Poniżej znajdziesz szczegóły zamówienia.</p>
+  </div>
+
+  <div class="box">
+    <h2 class="title is-4">Szczegóły zamówienia #<%= order.id %></h2>
+
+    <div class="content">
+      <p><strong>Wydarzenie:</strong> <%= order.event.name %></p>
+      <p><strong>Data wydarzenia:</strong> <%= order.event.date.strftime("%d.%m.%Y, %H:%M") %></p>
+      <p><strong>Miejsce:</strong> <%= order.event.place %></p>
+      <p><strong>Ilość biletów:</strong> <%= order.quantity %></p>
+      <p><strong>Cena za bilet:</strong> <%= number_to_currency(order.ticket_batch.price, unit: "zł", format: "%n %u") %></p>
+      <p><strong>Łączna kwota:</strong> <%= number_to_currency(order.total_price, unit: "zł", format: "%n %u") %></p>
+      <p><strong>Status:</strong> <span class="tag is-success">Zakupione</span></p>
+    </div>
+
+    <hr>
+
+    <h3 class="title is-5">Twoje bilety</h3>
+
+    <table class="table is-fullwidth">
+      <thead>
+        <tr>
+          <th>Numer biletu</th>
+          <th>Cena</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% order.tickets.each do |ticket| %>
+          <tr>
+            <td><%= ticket.ticket_number %></td>
+            <td><%= number_to_currency(ticket.price, unit: "zł", format: "%n %u") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="buttons">
+      <% if user_signed_in? %>
+        <%= link_to "Moje zamówienia", orders_path, class: "button is-primary" %>
+      <% end %>
+      <%= link_to "Powrót do wydarzeń", events_path, class: "button is-light" %>
+    </div>
+  </div>
+</div>
