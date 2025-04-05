@@ -23,9 +23,15 @@
         <a class="navbar-item" href="<%= admins_dashboard_path %>">
           Panel Administratora
         </a>
+        <a class="navbar-item" href="<%= orders_path %>">
+          Moje zamówienia
+        </a>
       <% elsif user_signed_in? %>
         <a class="navbar-item" href="<%= users_dashboard_path %>">
           Panel Użytkownika
+        </a>
+        <a class="navbar-item" href="<%= orders_path %>">
+          Moje zamówienia
         </a>
       <% end %>
     </div>

@@ -1,12 +1,19 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!, except: [:new]
+  before_action :authenticate_user!, except: [:new, :create], unless: :admin_signed_in?
 
   def new
     event = Event.find(params[:event_id])
     ticket_batch = TicketBatch.find(params[:ticket_batch_id])
     order = Order.new
 
-    user = user_signed_in? ? current_user : nil
+    # Check if either a regular user or admin is signed in
+    user = if user_signed_in?
+             current_user
+           elsif admin_signed_in?
+             current_admin
+           else
+             nil
+           end
 
     render :new, locals: {
       event: event,
@@ -37,44 +44,54 @@ class OrdersController < ApplicationController
     order.total_price = ticket_batch.price * quantity
     order.status = "completed"
 
-    if !user_signed_in? && params[:register] && params[:user].present?
-      user_params = params.require(:user).permit(:email, :password, :password_confirmation, :first_name, :last_name)
-      user = User.new(user_params)
-      user.role = "user"
-
-      if user.save
-        sign_in(user)
-        order.user = user
-      else
-        render :new, locals: { event: event, ticket_batch: ticket_batch, order: order, user: user }, status: :unprocessable_entity
-        return
-      end
+    if admin_signed_in?
+      # Admin jest zalogowany
+      order.user = current_admin
     elsif user_signed_in?
+      # Zwykły użytkownik jest zalogowany
       order.user = current_user
-    else
-      # Guest checkout
-      if params[:guest_email].blank?
-        redirect_to event_path(event), alert: "Podaj adres email lub zaloguj się."
+    elsif params[:guest_email].present? && params[:guest_password].present?
+      # Zakup z utworzeniem konta
+      if params[:guest_password] != params[:guest_password_confirmation]
+        flash.now[:alert] = "Podane hasła nie są identyczne."
+        render :new, locals: { event: event, ticket_batch: ticket_batch, order: order, user: nil }, status: :unprocessable_entity
         return
       end
 
-      # Find or create guest user
-      guest_user = User.find_or_initialize_by(email: params[:guest_email])
-      if guest_user.new_record?
-        guest_user.password = SecureRandom.hex(8)
-        guest_user.first_name = params[:guest_first_name]
-        guest_user.last_name = params[:guest_last_name]
-        guest_user.role = "user"
-
-        unless guest_user.save
-          redirect_to event_path(event), alert: "Nie udało się utworzyć konta użytkownika."
-          return
-        end
+      # Sprawdź, czy użytkownik o podanym emailu już istnieje
+      existing_user = User.find_by(email: params[:guest_email])
+      if existing_user
+        flash.now[:alert] = "Użytkownik z tym adresem email już istnieje. Zaloguj się, aby kontynuować."
+        render :new, locals: { event: event, ticket_batch: ticket_batch, order: order, user: nil }, status: :unprocessable_entity
+        return
       end
 
-      order.user = guest_user
+      # Utwórz nowego użytkownika
+      guest_user = User.new(
+        email: params[:guest_email],
+        password: params[:guest_password],
+        password_confirmation: params[:guest_password_confirmation],
+        first_name: params[:guest_first_name],
+        last_name: params[:guest_last_name],
+        role: "user"
+      )
+
+      if guest_user.save
+        sign_in(guest_user)
+        order.user = guest_user
+      else
+        flash.now[:alert] = "Nie udało się utworzyć konta: #{guest_user.errors.full_messages.join(', ')}"
+        render :new, locals: { event: event, ticket_batch: ticket_batch, order: order, user: guest_user }, status: :unprocessable_entity
+        return
+      end
+    else
+      # Brak danych
+      flash.now[:alert] = "Musisz podać dane osobowe lub zalogować się, aby kupić bilet."
+      render :new, locals: { event: event, ticket_batch: ticket_batch, order: order, user: nil }, status: :unprocessable_entity
+      return
     end
 
+    # Proces zamówienia
     ActiveRecord::Base.transaction do
       if order.save
         ticket_batch.available_tickets -= quantity
@@ -93,17 +110,21 @@ class OrdersController < ApplicationController
 
         redirect_to confirmation_order_path(order), notice: "Zamówienie zostało złożone pomyślnie."
       else
+        flash.now[:alert] = "Nie udało się zapisać zamówienia: #{order.errors.full_messages.join(', ')}"
         render :new, locals: { event: event, ticket_batch: ticket_batch, order: order, user: nil }, status: :unprocessable_entity
       end
     end
-  rescue ActiveRecord::RecordInvalid
-    redirect_to event_path(event), alert: "Wystąpił błąd podczas przetwarzania zamówienia."
+  rescue ActiveRecord::RecordInvalid => e
+    flash.now[:alert] = "Wystąpił błąd podczas przetwarzania zamówienia: #{e.message}"
+    render :new, locals: { event: event, ticket_batch: ticket_batch, order: order, user: nil }, status: :unprocessable_entity
   end
 
   def confirmation
     order = Order.find(params[:id])
 
-    if order.user != current_user
+    # Allow both regular users and admins to access their orders
+    if (user_signed_in? && order.user != current_user) &&
+       (admin_signed_in? && order.user != current_admin)
       redirect_to events_path, alert: "Nie masz dostępu do tego zamówienia."
       return
     end
@@ -112,7 +133,14 @@ class OrdersController < ApplicationController
   end
 
   def index
-    orders = current_user.orders.order(created_at: :desc)
+    # Show orders for the current user or admin
+    orders = if user_signed_in?
+               current_user.orders.order(created_at: :desc)
+             elsif admin_signed_in?
+               current_admin.orders.order(created_at: :desc)
+             else
+               []
+             end
 
     render :index, locals: { orders: orders }, status: :ok
   end
@@ -120,7 +148,8 @@ class OrdersController < ApplicationController
   def show
     order = Order.includes(:tickets).find(params[:id])
 
-    if order.user != current_user
+    if (user_signed_in? && order.user != current_user) &&
+       (admin_signed_in? && order.user != current_admin)
       redirect_to orders_path, alert: "Nie masz dostępu do tego zamówienia."
       return
     end
