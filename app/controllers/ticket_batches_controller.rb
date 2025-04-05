@@ -3,28 +3,67 @@ class TicketBatchesController < ApplicationController
     event = Event.find(params[:event_id])
     ticket_batch = TicketBatch.new(event: event)
 
-    respond_to do |format|
-      format.html { render :new, locals: { event: event, ticket_batch: ticket_batch } }
-      format.turbo_stream { render :new, locals: { event: event, ticket_batch: ticket_batch } }
-    end
+    render :new, locals: { event: event, ticket_batch: ticket_batch, validation_errors: {} }
   end
 
   def create
     event = Event.find(params[:event_id])
-    ticket_batch = event.ticket_batches.new(ticket_batch_params)
 
-    if ticket_batch.save
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.replace("ticket_batches_list", partial: "events/ticket_batches_list", locals: { event: event.reload }),
-            turbo_stream.update("modal_frame", "")
-          ]
+    contract = TicketBatchContract.new(event: event, existing_batches: event.ticket_batches)
+    validation = contract.call(ticket_batch_params.to_h)
+
+    if validation.success?
+      ticket_batch = event.ticket_batches.new(ticket_batch_params)
+
+      if ticket_batch.save
+        respond_to do |format|
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.replace("ticket_batches_list",
+                partial: "events/ticket_batches_list",
+                locals: { event: event.reload }
+              ),
+              turbo_stream.update("modal_frame", "")
+            ]
+          end
+          format.html { redirect_to event_path(event), notice: "Pula biletów została dodana." }
         end
-        format.html { redirect_to event_path(event), notice: "Pula biletów została dodana." }
+      else
+        respond_to do |format|
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.update("modal_frame",
+              template: "ticket_batches/new",
+              locals: {
+                event: event,
+                ticket_batch: ticket_batch,
+                validation_errors: ticket_batch.errors.to_h
+              }
+            ), status: :unprocessable_entity
+          end
+          format.html do
+            flash.now[:alert] = ticket_batch.errors.full_messages.join(", ")
+            render :new, locals: { event: event, ticket_batch: ticket_batch, validation_errors: ticket_batch.errors.to_h }, status: :unprocessable_entity
+          end
+        end
       end
     else
-      render :new, locals: { event: event, ticket_batch: ticket_batch }, status: :unprocessable_entity
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("modal_frame",
+            template: "ticket_batches/new",
+            locals: {
+              event: event,
+              ticket_batch: TicketBatch.new(ticket_batch_params.merge(event: event)),
+              validation_errors: validation.errors.to_h
+            }
+          ), status: :unprocessable_entity
+        end
+        format.html do
+          ticket_batch = TicketBatch.new(ticket_batch_params.merge(event: event))
+          flash.now[:alert] = validation.errors.to_h.values.flatten.join(", ")
+          render :new, locals: { event: event, ticket_batch: ticket_batch, validation_errors: validation.errors.to_h }, status: :unprocessable_entity
+        end
+      end
     end
   end
 
@@ -32,28 +71,67 @@ class TicketBatchesController < ApplicationController
     event = Event.find(params[:event_id])
     ticket_batch = event.ticket_batches.find(params[:id])
 
-    respond_to do |format|
-      format.html { render :edit, locals: { event: event, ticket_batch: ticket_batch } }
-      format.turbo_stream { render :edit, locals: { event: event, ticket_batch: ticket_batch } }
-    end
+    render :edit, locals: { event: event, ticket_batch: ticket_batch, validation_errors: {} }
   end
 
   def update
     event = Event.find(params[:event_id])
     ticket_batch = event.ticket_batches.find(params[:id])
 
-    if ticket_batch.update(ticket_batch_params)
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.replace("ticket_batches_list", partial: "events/ticket_batches_list", locals: { event: event.reload }),
-            turbo_stream.update("modal_frame", "")
-          ]
+    contract = TicketBatchContract.new(event: event, existing_batches: event.ticket_batches)
+    validation = contract.call(ticket_batch_params.to_h.merge(id: ticket_batch.id))
+
+    if validation.success?
+      if ticket_batch.update(ticket_batch_params)
+        respond_to do |format|
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.replace("ticket_batches_list",
+                partial: "events/ticket_batches_list",
+                locals: { event: event.reload }
+              ),
+              turbo_stream.update("modal_frame", "")
+            ]
+          end
+          format.html { redirect_to event_path(event), notice: "Pula biletów została zaktualizowana." }
         end
-        format.html { redirect_to event_path(event), notice: "Pula biletów została zaktualizowana." }
+      else
+        respond_to do |format|
+          format.turbo_stream do
+            # Render the entire edit.html.erb template within the modal frame
+            render turbo_stream: turbo_stream.update("modal_frame",
+              template: "ticket_batches/edit",
+              locals: {
+                event: event,
+                ticket_batch: ticket_batch,
+                validation_errors: ticket_batch.errors.to_h
+              }
+            ), status: :unprocessable_entity
+          end
+          format.html do
+            render :edit, locals: { event: event, ticket_batch: ticket_batch, validation_errors: ticket_batch.errors.to_h }, status: :unprocessable_entity
+          end
+        end
       end
     else
-      render :edit, locals: { event: event, ticket_batch: ticket_batch }, status: :unprocessable_entity
+      validation_errors = validation.errors.to_h
+
+      respond_to do |format|
+        format.turbo_stream do
+          # Render the entire edit.html.erb template within the modal frame
+          render turbo_stream: turbo_stream.update("modal_frame",
+            template: "ticket_batches/edit",
+            locals: {
+              event: event,
+              ticket_batch: ticket_batch,
+              validation_errors: validation_errors
+            }
+          ), status: :unprocessable_entity
+        end
+        format.html do
+          render :edit, locals: { event: event, ticket_batch: ticket_batch, validation_errors: validation_errors }, status: :unprocessable_entity
+        end
+      end
     end
   end
 

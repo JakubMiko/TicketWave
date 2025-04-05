@@ -18,16 +18,16 @@
               <tr>
                 <td><%= batch.available_tickets %></td>
                 <td><%= number_to_currency(batch.price, unit: "PLN", format: "%n %u") %></td>
-                <td><%= batch.sale_start&.strftime("%Y-%m-%d %H:%M") %></td>
-                <td><%= batch.sale_end&.strftime("%Y-%m-%d %H:%M") %></td>
+                <td><%= batch.sale_start&.strftime("%d-%m-%Y %H:%M") %></td>
+                <td><%= batch.sale_end&.strftime("%d-%m-%Y %H:%M") %></td>
                 <td>
-                  <%= link_to "Edytuj", edit_event_ticket_batch_path(event, batch), 
-                      class: "button is-small is-warning", 
+                  <%= link_to "Edytuj", edit_event_ticket_batch_path(event, batch),
+                      class: "button is-small is-warning",
                       data: { turbo_frame: "modal_frame" } %>
-                  
-                  <%= button_to "Usuń", 
-                      event_ticket_batch_path(event, batch), 
-                      method: :delete, 
+
+                  <%= button_to "Usuń",
+                      event_ticket_batch_path(event, batch),
+                      method: :delete,
                       form: { data: { turbo_confirm: "Czy na pewno chcesz usunąć tę pulę biletów?" } },
                       class: "button is-small is-danger" %>
                 </td>
