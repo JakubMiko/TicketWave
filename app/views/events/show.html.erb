@@ -37,6 +37,13 @@
     </div>
   </div>
 
-  <%= render "ticket_batches_list", event: event %>
+  <div data-controller="auto-refresh"
+      data-auto-refresh-interval-value="3000"
+      data-auto-refresh-url-value="<%= event_path(event) %>">
+    <div data-auto-refresh-target="content">
+      <%= render "ticket_batches_list", event: event %>
+    </div>
+  </div>
+
   <turbo-frame id="modal_frame"></turbo-frame>
 </div>
