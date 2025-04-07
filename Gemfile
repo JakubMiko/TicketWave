@@ -68,6 +68,9 @@ group :development, :test do
 
   # Helps create test data with factories in a clean and maintainable way [https://github.com/thoughtbot/factory_bot_rails]
   gem "factory_bot_rails"
+
+  # Creates api serialization
+  gem "jsonapi-serializer"
 end
 
 group :development do

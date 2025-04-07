@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   namespace :users do
     get "dashboard", to: "dashboard#show", as: :dashboard
+    resource :token, only: [:show]
   end
 
   namespace :admins do
@@ -27,6 +28,19 @@ Rails.application.routes.draw do
 
   # Add this route for the ticket purchase flow
   get "events/:event_id/ticket_batches/:ticket_batch_id/orders/new", to: "orders#new", as: "new_ticket_batch_order"
+
+  namespace :api do
+    namespace :v1 do
+      resource :token, only: [:show, :create]
+      resources :events, only: [:index, :show] do
+        member do
+          get "ticket_availability"
+        end
+      end
+
+      resources :orders, only: [ :index ]
+    end
+  end
 
   resources :events
   root to: "landing#show"
