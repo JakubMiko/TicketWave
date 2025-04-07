@@ -9,12 +9,16 @@ $primary: $purple;
 
 :root {
     --primary-color: #f8f0ff; /* Bardzo jasny fiolet */
-    --secondary-color: #6a1b9a; /* Ciemniejszy fiolet */
+    --secondary-color: #5a0e8a; /* Ciemniejszy fiolet dla lepszego kontrastu */
+    --text-color: #2a2a2a; /* Ciemny tekst na jasnym tle */
+    --link-color: #5a0e8a; /* Kolor linków */
   }
 
   [data-theme="dark"] {
-    --primary-color: #000000; /* Kolor podstawowy w trybie ciemnym */
-    --secondary-color: #4b0082; /* Ciemniejszy fiolet */
+    --primary-color: #121212; /* Ciemniejsze tło w trybie ciemnym */
+    --secondary-color: #b388ff; /* Jaśniejszy fiolet dla lepszego kontrastu w trybie ciemnym */
+    --text-color: #e6e6e6; /* Jaśniejszy tekst na ciemnym tle */
+    --link-color: #bb86fc; /* Jaśniejszy kolor linków w trybie ciemnym */
   }
 
   body {
@@ -37,4 +41,16 @@ $primary: $purple;
 
   .image img.is-slightly-rounded {
     border-radius: 4px !important;
+  }
+
+  .footer {
+    .content {
+      strong {
+        color: #5a0e8a; // Ciemniejszy fiolet dla lepszego kontrastu w trybie jasnym
+        font-weight: 600; // Zwiększenie grubości fontu dla lepszej widoczności
+      }
+      p {
+        color: #333; // Ciemniejszy kolor tekstu w trybie jasnym
+      }
+    }
   }
