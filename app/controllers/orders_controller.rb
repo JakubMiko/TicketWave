@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!, except: [:new, :create], unless: :admin_signed_in?
+  before_action :authenticate_user!, except: [ :new, :create ], unless: :admin_signed_in?
 
   def new
     event = Event.find(params[:event_id])
@@ -9,11 +9,11 @@ class OrdersController < ApplicationController
     # Check if either a regular user or admin is signed in
     user = if user_signed_in?
              current_user
-           elsif admin_signed_in?
+    elsif admin_signed_in?
              current_admin
-           else
+    else
              nil
-           end
+    end
 
     render :new, locals: {
       event: event,
@@ -136,11 +136,11 @@ class OrdersController < ApplicationController
     # Show orders for the current user or admin
     orders = if user_signed_in?
                current_user.orders.order(created_at: :desc)
-             elsif admin_signed_in?
+    elsif admin_signed_in?
                current_admin.orders.order(created_at: :desc)
-             else
+    else
                []
-             end
+    end
 
     render :index, locals: { orders: orders }, status: :ok
   end

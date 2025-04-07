@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     resources :ticket_batches
   end
 
-  resources :orders, only: [:index, :show, :create] do
+  resources :orders, only: [ :index, :show, :create ] do
     get "confirmation", on: :member
   end
 
