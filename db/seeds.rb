@@ -43,7 +43,7 @@ theater = Event.create!(
   name: "Premiera Sztuki ABC",
   description: "Poruszająca premiera w teatrze, która wprowadzi Cię w świat emocji i refleksji. Sztuka ABC to opowieść o ludzkiej naturze, miłości i poświęceniu. Spektakl wyreżyserowany przez znanego reżysera teatralnego, z udziałem wybitnych aktorów, którzy przeniosą Cię w inny wymiar.",
   place: "Teatr Narodowy",
-  date: (Time.now + 1.month).change(hour: 18, min: 30, sec: 0),
+  date: (Time.now - 1.month).change(hour: 18, min: 30, sec: 0),
   category: "theater"
 )
 # Dołączanie obrazu do wydarzenia teatralnego

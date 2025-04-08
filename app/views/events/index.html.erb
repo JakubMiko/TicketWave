@@ -52,7 +52,7 @@
                   </span>
                 </time>
                 <br>
-                <span class="tag is-info mt-2"><%= event.category %></span>
+                <span class="tag is-info mt-2"><%= Event.categories[event.category] %></span>
                 <% if event.past_event? %>
                   <span class="tag is-warning mt-2">Wydarzenie minione</span>
                 <% else %>
