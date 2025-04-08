@@ -1,13 +1,14 @@
-<%# app/views/events/index.html.erb %>
 <div class="container mt-5">
-  <div class="has-text-centered">
+  <div class="has-text-centered mb-5">
     <h1 class="title is-2 has-text-primary">Lista wydarzeń</h1>
     <p class="subtitle is-5">Przeglądaj dostępne wydarzenia i zarządzaj nimi</p>
   </div>
 
-  <div class="has-text-centered my-5">
-    <%= link_to "Dodaj nowe wydarzenie", new_event_path, class: "button is-primary is-large" %>
-  </div>
+  <% if current_user&.admin? %>
+    <div class="has-text-centered my-5">
+      <%= link_to "Dodaj nowe wydarzenie", new_event_path, class: "button is-primary is-large" %>
+    </div>
+  <% end %>
 
   <% if events.any? %>
     <div class="columns is-multiline">
@@ -40,7 +41,7 @@
                 </div>
               </div>
 
-              <div class="content">
+              <div class="content has-text-centered">
                 <%= truncate(event.description, length: 100) %>
                 <br>
                 <time datetime="<%= event.date.iso8601 %>">
@@ -48,7 +49,7 @@
                     <span class="icon">
                       <i class="fas fa-calendar-alt"></i>
                     </span>
-                    <span><%= event.date.strftime("%d-%m-%Y %H:%M") %></span>
+                    <span><strong><%= event.date.strftime("%d-%m-%Y %H:%M") %></strong></span>
                   </span>
                 </time>
                 <br>
@@ -62,13 +63,15 @@
             </div>
             <footer class="card-footer">
               <%= link_to "Szczegóły", event_path(event), class: "card-footer-item has-text-info" %>
-              <% if event.editable? %>
-                <%= link_to "Edytuj", edit_event_path(event), class: "card-footer-item has-text-warning" %>
-              <% else %>
-                <span class="card-footer-item has-text-grey-light">Edytuj</span>
+              <% if current_user&.admin? %>
+                <% if event.editable? %>
+                  <%= link_to "Edytuj", edit_event_path(event), class: "card-footer-item has-text-warning" %>
+                <% else %>
+                  <span class="card-footer-item has-text-grey-light">Edytuj</span>
+                <% end %>
+                <%= link_to "Usuń", event_path(event), class: "card-footer-item has-text-danger",
+                    data: { turbo_method: :delete, turbo_confirm: "Czy na pewno chcesz usunąć to wydarzenie?" } %>
               <% end %>
-              <%= link_to "Usuń", event_path(event), class: "card-footer-item has-text-danger",
-                  data: { turbo_method: :delete, turbo_confirm: "Czy na pewno chcesz usunąć to wydarzenie?" } %>
             </footer>
           </div>
         </div>
