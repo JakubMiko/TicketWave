@@ -44,14 +44,14 @@
               <div class="content has-text-centered">
                 <%= truncate(event.description, length: 100) %>
                 <br>
-                <time datetime="<%= event.date.iso8601 %>">
-                  <span class="icon-text">
-                    <span class="icon">
-                      <i class="fas fa-calendar-alt"></i>
+                  <time datetime="<%= event.date.iso8601 %>">
+                    <span class="icon-text">
+                      <span class="icon">
+                        <i class="fas fa-calendar-alt"></i>
+                      </span>
+                      <span class="has-text-black has-text-weight-bold"><%= event.date.strftime("%d-%m-%Y %H:%M") %></span>
                     </span>
-                    <span><strong><%= event.date.strftime("%d-%m-%Y %H:%M") %></strong></span>
-                  </span>
-                </time>
+                  </time>
                 <br>
                 <span class="tag is-info mt-2"><%= Event.categories[event.category] %></span>
                 <% if event.past_event? %>

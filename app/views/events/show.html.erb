@@ -14,12 +14,12 @@
         <h1 class="title is-3 has-text-primary"><%= event.name %></h1>
         <p class="subtitle is-5 has-text-grey">Szczegóły wydarzenia</p>
 
-        <div class="content">
-          <p><strong>Opis:</strong> <%= event.description %></p>
-          <p><strong>Miejsce:</strong> <%= event.place %></p>
-          <p><strong>Data:</strong> <%= event.date.strftime("%d-%m-%Y %H:%M") %></p>
-          <p><strong>Kategoria:</strong> <%= Event.categories[event.category] %></p>
-        </div>
+          <div class="content">
+            <p><strong  class="has-text-black">Opis:</strong> <%= event.description %></p>
+            <p><strong  class="has-text-black">Miejsce:</strong> <%= event.place %></p>
+            <p><strong  class="has-text-black">Data:</strong> <%= event.date.strftime("%d-%m-%Y %H:%M") %></p>
+            <p><strong  class="has-text-black">Kategoria:</strong> <%= Event.categories[event.category] %></p>
+          </div>
 
           <div class="buttons">
             <% if current_user&.admin? %>

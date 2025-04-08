@@ -44,11 +44,7 @@ class EventsController < ApplicationController
     else
       result.errors.to_h.each do |key, messages|
         Array(messages).each do |message|
-          if key.present?
-            event.errors.add(key, message)
-          else
-            event.errors.add(:base, message)
-          end
+          event.errors.add(:base, message)
         end
       end
 

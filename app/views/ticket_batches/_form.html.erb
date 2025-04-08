@@ -2,7 +2,6 @@
               local: false,
               data: {
                 turbo_frame: "modal_frame"
-                # Removed: action: "turbo:submit-end->modal#close"
               } do |form| %>
   <% if defined?(validation_errors) && validation_errors.any? %>
     <div class="notification is-danger">
@@ -25,7 +24,7 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :available_tickets, "Liczba dostępnych biletów", class: "label" %>
+    <%= form.label :available_tickets, "Liczba dostępnych biletów", class: "label has-text-black" %>
     <div class="control">
       <%= form.number_field :available_tickets,
                            class: "input #{'is-danger' if defined?(validation_errors) && validation_errors[:available_tickets].present?}",
@@ -39,7 +38,7 @@
   </div>
 
   <div class="field">
-    <%= form.label :price, "Cena biletu", class: "label" %>
+    <%= form.label :price, "Cena biletu", class: "label has-text-black" %>
     <div class="control">
       <%= form.number_field :price,
                            class: "input #{'is-danger' if defined?(validation_errors) && validation_errors[:price].present?}",
@@ -54,7 +53,7 @@
   </div>
 
   <div class="field">
-    <%= form.label :sale_start, "Data rozpoczęcia sprzedaży", class: "label" %>
+    <%= form.label :sale_start, "Data rozpoczęcia sprzedaży", class: "label has-text-black" %>
     <div class="control">
       <%= form.datetime_local_field :sale_start,
                                    class: "input #{'is-danger' if defined?(validation_errors) && validation_errors[:sale_start].present?}",
@@ -68,7 +67,7 @@
   </div>
 
   <div class="field">
-    <%= form.label :sale_end, "Data zakończenia sprzedaży", class: "label" %>
+    <%= form.label :sale_end, "Data zakończenia sprzedaży", class: "label has-text-black" %>
     <div class="control">
       <%= form.datetime_local_field :sale_end,
                                    class: "input #{'is-danger' if defined?(validation_errors) && validation_errors[:sale_end].present?}",
