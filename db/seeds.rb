@@ -7,8 +7,8 @@ require 'open-uri'
 # Event.delete_all
 # User.delete_all
 
-admin = User.create!(first_name: "Admin", last_name: "User", email: "admin@gmail.com", password: "password", role: "admin")
-regular_user = User.create!(first_name: "Regular", last_name: "User", email: "regular@gmail.com", password: "password", role: "user")
+admin = User.create!(first_name: "Admin", last_name: "User", email: "admin@gmail.com", password: "password", role: :admin)
+regular_user = User.create!(first_name: "Regular", last_name: "User", email: "regular@gmail.com", password: "password", role: :user)
 
 admin.update!(api_token: SecureRandom.hex(32))
 regular_user.update!(api_token: SecureRandom.hex(32))

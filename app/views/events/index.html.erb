@@ -63,7 +63,7 @@
             </div>
             <footer class="card-footer">
               <%= link_to "Szczegóły", event_path(event), class: "card-footer-item has-text-info" %>
-              <% if current_user&.admin? %>
+              <% if admin_signed_in? %>
                 <% if event.editable? %>
                   <%= link_to "Edytuj", edit_event_path(event), class: "card-footer-item has-text-warning" %>
                 <% else %>
