@@ -1,4 +1,3 @@
-# db/seeds.rb
 require 'open-uri'
 
 # Uncomment the following line if you want to clean the database before seeding
@@ -19,7 +18,6 @@ puts "User API token: #{regular_user.api_token}"
 
 events = []
 
-# Koncert
 concert = Event.create!(
   name: "Koncert XYZ",
   description: "Niesamowity koncert zespołu XYZ, który zaskoczy Cię swoją energią i niepowtarzalnym brzmieniem. Zespół XYZ to grupa, która łączy różne gatunki muzyczne, tworząc unikalne kompozycje. Ich koncerty to nie tylko muzyka, ale także niesamowite wizualizacje i kontakt z publicznością.",
@@ -27,7 +25,6 @@ concert = Event.create!(
   date: (Time.now + 2.months).change(hour: 19, min: 0, sec: 0),
   category: "music"
 )
-# Dołączanie obrazu do koncertu
 concert_img_path = Rails.root.join('app/assets/images/seed_images/concert.jpg')
 if File.exist?(concert_img_path)
   concert.image.attach(
@@ -38,7 +35,6 @@ if File.exist?(concert_img_path)
 end
 events << concert
 
-# Teatr
 theater = Event.create!(
   name: "Premiera Sztuki ABC",
   description: "Poruszająca premiera w teatrze, która wprowadzi Cię w świat emocji i refleksji. Sztuka ABC to opowieść o ludzkiej naturze, miłości i poświęceniu. Spektakl wyreżyserowany przez znanego reżysera teatralnego, z udziałem wybitnych aktorów, którzy przeniosą Cię w inny wymiar.",
@@ -46,7 +42,6 @@ theater = Event.create!(
   date: (Time.now - 1.month).change(hour: 18, min: 30, sec: 0),
   category: "theater"
 )
-# Dołączanie obrazu do wydarzenia teatralnego
 theater_img_path = Rails.root.join('app/assets/images/seed_images/theater.jpg')
 if File.exist?(theater_img_path)
   theater.image.attach(
@@ -57,7 +52,6 @@ if File.exist?(theater_img_path)
 end
 events << theater
 
-# Sport
 sports = Event.create!(
   name: "Mecz Piłki Nożnej Polska vs. Niemcy",
   description: "Emocjonujący mecz na stadionie, który przyciągnie uwagę całego kraju. Polska reprezentacja zmierzy się z drużyną niemiecką w kluczowym meczu eliminacyjnym. To spotkanie może zadecydować o awansie do kolejnej fazy rozgrywek. Przyjdź i wspieraj biało-czerwonych w tym ważnym starciu!",
@@ -65,7 +59,6 @@ sports = Event.create!(
   date: (Time.now + 3.months).change(hour: 20, min: 0, sec: 0),
   category: "sports"
 )
-# Dołączanie obrazu do wydarzenia sportowego
 sports_img_path = Rails.root.join('app/assets/images/seed_images/sports.jpg')
 if File.exist?(sports_img_path)
   sports.image.attach(
@@ -76,7 +69,6 @@ if File.exist?(sports_img_path)
 end
 events << sports
 
-# Dodatkowe wydarzenie - festiwal
 festival = Event.create!(
   name: "Festiwal Muzyki Klasycznej",
   description: "Festiwal muzyki klasycznej z udziałem najwybitniejszych orkiestr i solistów z całego świata. Przez tydzień będziesz mógł uczestniczyć w niezapomnianych koncertach muzyki klasycznej, od baroku po współczesność. Wyjątkowe doznania muzyczne w pięknej scenerii.",
@@ -84,7 +76,6 @@ festival = Event.create!(
   date: (Time.now + 5.months).change(hour: 17, min: 0, sec: 0),
   category: "festival"
 )
-# Dołączanie obrazu do festiwalu
 festival_img_path = Rails.root.join('app/assets/images/seed_images/festival.jpg')
 if File.exist?(festival_img_path)
   festival.image.attach(
@@ -95,7 +86,6 @@ if File.exist?(festival_img_path)
 end
 events << festival
 
-# Pule biletów dla każdego wydarzenia
 ticket_batches = []
 events.each do |event|
   ticket_batches << TicketBatch.create!(
@@ -107,7 +97,6 @@ events.each do |event|
   )
 end
 
-# Zamówienia dla użytkowników
 orders = []
 ticket_batches.each do |ticket_batch|
   order1 = Order.create!(
@@ -129,7 +118,6 @@ ticket_batches.each do |ticket_batch|
   orders << order2
 end
 
-# Bilety dla zamówień
 orders.each do |order|
   order.quantity.times do
     Ticket.create!(
