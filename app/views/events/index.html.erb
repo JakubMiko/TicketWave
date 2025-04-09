@@ -4,7 +4,7 @@
     <p class="subtitle is-5">Przeglądaj dostępne wydarzenia i zarządzaj nimi</p>
   </div>
 
-  <% if current_user&.admin? %>
+  <% if admin_signed_in? %>
     <div class="has-text-centered my-5">
       <%= link_to "Dodaj nowe wydarzenie", new_event_path, class: "button is-primary is-large" %>
     </div>

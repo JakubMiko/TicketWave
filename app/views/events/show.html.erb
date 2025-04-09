@@ -22,7 +22,7 @@
           </div>
 
           <div class="buttons">
-            <% if current_user&.admin? %>
+            <% if admin_signed_in? %>
               <% unless event.past_event? %>
                 <%= link_to "Edytuj", edit_event_path(event), class: "button is-warning" %>
               <% end %>
