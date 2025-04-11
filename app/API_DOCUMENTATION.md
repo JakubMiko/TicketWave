@@ -34,7 +34,7 @@
   curl -X GET http://localhost:3000/api/v1/events/1/ticket_availability
   ```
 
-## Private Endpoints (Requires Authentication)
+## Private Endpoints (Requires Authentication) 
 
 ### 1. User Order History
 - **Endpoint:** `GET /api/v1/orders`
