@@ -7,7 +7,7 @@ class Api::V1::BaseController < ApplicationController
 
   def authenticate_api_user!
     @current_user = authenticate_with_api_token
-    render json: { errors: [{ detail: 'Unauthorized' }] }, status: :unauthorized unless @current_user
+    render json: { errors: [ { detail: "Unauthorized" } ] }, status: :unauthorized unless @current_user
   end
 
   def current_user
@@ -17,7 +17,7 @@ class Api::V1::BaseController < ApplicationController
   private
 
   def authenticate_with_api_token
-    api_token = request.headers['X-API-Token'] || params[:api_token]
+    api_token = request.headers["X-API-Token"] || params[:api_token]
     User.find_by(api_token: api_token) if api_token.present?
   end
 

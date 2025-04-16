@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   namespace :users do
     get "dashboard", to: "dashboard#show", as: :dashboard
-    resource :token, only: [:show]
+    resource :token, only: [ :show ]
   end
 
   namespace :admins do
@@ -31,8 +31,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resource :token, only: [:show, :create]
-      resources :events, only: [:index, :show] do
+      resource :token, only: [ :show, :create ]
+      resources :events, only: [ :index, :show ] do
         member do
           get "ticket_availability"
         end
