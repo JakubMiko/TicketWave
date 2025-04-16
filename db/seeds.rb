@@ -19,7 +19,7 @@ puts "User API token: #{regular_user.api_token}"
 events = []
 
 concert = Event.create!(
-  name: "Koncert XYZ",
+  name: 'Koncert XYZ',
   description: "Niesamowity koncert zespołu XYZ, który zaskoczy Cię swoją energią i niepowtarzalnym brzmieniem. Zespół XYZ to grupa, która łączy różne gatunki muzyczne, tworząc unikalne kompozycje. Ich koncerty to nie tylko muzyka, ale także niesamowite wizualizacje i kontakt z publicznością.",
   place: "Arena Warszawa",
   date: (Time.now + 2.months).change(hour: 19, min: 0, sec: 0),
