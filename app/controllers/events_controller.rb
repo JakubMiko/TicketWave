@@ -87,13 +87,12 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    event = Event.find_by(id: params[:id])
+    service = Events::Destroy.call(event_id: params[:id])
 
-    if event
-      event.destroy
+    if service.success?
       redirect_to events_path, notice: "Wydarzenie zostało usunięte."
     else
-      render :not_found, status: :not_found
+      render :not_found, locals: { errors: service.errors }, status: :not_found
     end
   end
 
