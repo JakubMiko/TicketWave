@@ -30,25 +30,12 @@ class EventsController < ApplicationController
   end
 
   def create
-    event = Event.new(event_params)
+    service = CreateEventService.call(params: event_params)
 
-    contract = EventContract.new
-    result = contract.call(event_params.to_h)
-
-    if result.success?
-      if event.save
-        redirect_to events_path, notice: "Wydarzenie zostało dodane."
-      else
-        render :new, locals: { event: event }, status: :unprocessable_entity
-      end
+    if service.success?
+      redirect_to events_path, notice: "Wydarzenie zostało dodane."
     else
-      result.errors.to_h.each do |key, messages|
-        Array(messages).each do |message|
-          event.errors.add(:base, message)
-        end
-      end
-
-      render :new, locals: { event: event }, status: :unprocessable_entity
+      render :new, locals: { event: service.event }, status: :unprocessable_entity
     end
   end
 
