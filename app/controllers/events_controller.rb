@@ -1,8 +1,12 @@
 class EventsController < ApplicationController
   def index
-    events = Event.all
+    service = Events::Index.call
 
-    render :index, locals: { events: events }, status: :ok
+    if service.success?
+      render :index, locals: { events: service.events }, status: :ok
+    else
+      render :error, locals: { errors: service.errors }, status: :internal_server_error
+    end
   end
 
   def show
