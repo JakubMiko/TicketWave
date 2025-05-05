@@ -14,8 +14,8 @@ export default class extends Controller {
         },
       }
     );
-  }
- 
+  } 
+
   disconnect() {
     if (this.subscription) {
       consumer.subscriptions.remove(this.subscription);
