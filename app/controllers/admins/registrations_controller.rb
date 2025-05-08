@@ -3,8 +3,6 @@ class Admins::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [ :create ]
   skip_before_action :require_no_authentication, only: [ :new, :create ]
 
-  ADMIN_CREDENTIALS = { username: "admin", password: "supersecret" }
-
   def new
     super
   end
@@ -20,7 +18,8 @@ class Admins::RegistrationsController < Devise::RegistrationsController
 
   def authenticate_admin_credentials
     authenticate_or_request_with_http_basic("Admin Sign Up") do |username, password|
-      username == ADMIN_CREDENTIALS[:username] && password == ADMIN_CREDENTIALS[:password]
+      username == Rails.application.credentials.dig(:admin, :username) &&
+      password == Rails.application.credentials.dig(:admin, :password)
     end
   end
 
