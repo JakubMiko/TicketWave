@@ -47,7 +47,7 @@ class EventsController < ApplicationController
     event = Event.find_by(id: params[:id])
 
     if event
-      if event.editable?
+      unless event.past?
         render :edit, locals: { event: event }, status: :ok
       else
         redirect_to events_path, alert: "Nie można edytować wydarzeń, które już się odbyły."

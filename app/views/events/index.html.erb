@@ -54,7 +54,7 @@
                   </time>
                 <br>
                 <span class="tag is-info mt-2"><%= Event.categories[event.category] %></span>
-                <% if event.past_event? %>
+                <% if event.past? %>
                   <span class="tag is-warning mt-2">Wydarzenie minione</span>
                 <% else %>
                   <span class="tag is-success mt-2">Aktywne</span>
@@ -64,7 +64,7 @@
             <footer class="card-footer">
               <%= link_to "Szczegóły", event_path(event), class: "card-footer-item has-text-info" %>
               <% if admin_signed_in? %>
-                <% if event.editable? %>
+                <% unless event.past? %>
                   <%= link_to "Edytuj", edit_event_path(event), class: "card-footer-item has-text-warning" %>
                 <% else %>
                   <span class="card-footer-item has-text-grey-light">Edytuj</span>

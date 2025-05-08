@@ -23,11 +23,11 @@
 
           <div class="buttons">
             <% if admin_signed_in? %>
-              <% unless event.past_event? %>
+              <% unless event.past? %>
                 <%= link_to "Edytuj", edit_event_path(event), class: "button is-warning" %>
               <% end %>
               <%= link_to "Usuń", event_path(event), method: :delete, data: { confirm: "Czy na pewno chcesz usunąć to wydarzenie?" }, class: "button is-danger" %>
-              <% unless event.past_event? %>
+              <% unless event.past? %>
                 <%= link_to "Dodaj pulę biletów", new_event_ticket_batch_path(event),
                             class: "button is-primary",
                             data: { turbo_frame: "modal_frame" } %>

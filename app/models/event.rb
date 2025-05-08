@@ -3,6 +3,9 @@ class Event < ApplicationRecord
   has_many :tickets, dependent: :destroy
   has_one_attached :image
 
+  scope :upcoming, -> { where("date > ?", DateTime.now).order(date: :asc) }
+  scope :past, -> { where("date <= ?", DateTime.now).order(date: :desc) }
+
   enum :category, {
     music: "muzyka",
     theater: "teatr",
@@ -14,11 +17,7 @@ class Event < ApplicationRecord
     other: "inne"
   }
 
-  def past_event?
-    date < DateTime.now
-  end
-
-  def editable?
-    !past_event?
+  def past?
+    date <= DateTime.now
   end
 end
