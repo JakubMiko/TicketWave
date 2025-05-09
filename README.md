@@ -1,6 +1,4 @@
-# TicketWave
-
-🎟️ TicketWave 🎟️
+# 🎟️ TicketWave 🎟️ 
 
 TicketWave is a comprehensive event ticketing platform that allows users to discover and purchase tickets for various events like concerts, theater shows, sports events, and stand-up comedy. Built on Ruby on Rails with PostgreSQL database, this application demonstrates modern web development practices.
 
