@@ -24,7 +24,7 @@ TicketWave is a comprehensive event ticketing platform that allows users to disc
 ### User Dashboard
 ![User Dashboard](app/assets/images/readme/users_dashboard.png)
 
-### User Order History
+### User Order History 
 ![User Order History](app/assets/images/readme/users_order_history.png)
 
 ### Admin Dashboard
