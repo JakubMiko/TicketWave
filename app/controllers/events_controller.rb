@@ -5,7 +5,8 @@ class EventsController < ApplicationController
     if service.success?
       render :index, locals: { events: service.events }, status: :ok
     else
-      render :error, locals: { errors: service.errors }, status: :internal_server_error
+      flash.now[:alert] = service.errors.join(", ")
+      render :index, status: :unprocessable_entity
     end
   end
 
